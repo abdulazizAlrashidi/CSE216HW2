@@ -1,5 +1,5 @@
 import OpenAddressHashTable from "./OpenAddressHashTable.js";
-import { Person, Employee, Student } from "./People.js";
+import { Person, Employee, Student, Undergraduate } from "./People.js";
 
 const NUM_BINS = 5;
 const KEY_LENGTH = 8;
@@ -62,3 +62,10 @@ printHashTable("\nAfter Removing Keith Richards", hashTable);
 
 hashTable.removeValue(dgKey);
 printHashTable("\nAfter Removing Bill Withers", hashTable);
+
+// TESTING UNDERGRADUATE CLASS
+let aaKey = hashTable.generateKey();
+hashTable.putValue(aaKey, new Undergraduate(aaKey, "Abdulaziz", "Alrashidi", 3.6, "U2"));
+printHashTable("\nAfter adding an undergraduate", hashTable);
+hashTable.removeValue(aaKey);
+printHashTable("\n After removing Abdulaziz Alrashidi", hashTable);
