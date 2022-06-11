@@ -47,6 +47,7 @@ export default class OpenAddressHashTable {
     
     // @todo - YOU MUST DEFINE THIS METHOD
     getValue(key) {
+        let r  = 0;
         return null;
     }
     
