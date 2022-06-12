@@ -6,6 +6,10 @@ class Node {
         this.left = initLeft;
         this.right = initRight;
     }
+    //constructor(initKey, initData) {
+    //    this.key = initKey;
+    //    this.data = initData;
+    //}
 };
 
 export default class BinarySearchTree {
@@ -34,19 +38,104 @@ export default class BinarySearchTree {
         return key;
     }
 
+    // helper method
+    search(key) {
+        let node = this.root;
+
+        while (node != null && key != node.key) {
+            if (key < node.key) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return node;
+    }
+
+    transplant(u, v) {
+        if (u.parent == null) {
+            this.root = v;
+        } else if (u == u.parent.left) {
+            u.parent.left = v;
+        } else {
+            u.parent.right = v;
+        }
+        if (v != null) {
+            v.parent = u.parent;
+        }
+    }
+
+    minimum(node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
     // @todo - YOU MUST DEFINE THIS METHOD
     putValue(key, value) {
+        let startingNode = this.root;
+        let trailingNode = null;
+        let newNode = new Node(key, value);
 
+        while (startingNode != null) {
+            trailingNode = startingNode;
+
+            if (newNode.key < startingNode.key) {
+                startingNode = startingNode.left;
+            } else if (newNode.key > startingNode.key) {
+                startingNode = startingNode.right;
+            } else {
+                break;
+            }
+        }
+        newNode.parent = trailingNode;
+
+        if (trailingNode == null) {
+            this.root = newNode;
+        } else if (newNode.key < trailingNode.key) {
+            trailingNode.left = newNode;
+        } else if (newNode.key > trailingNode.key) {
+            trailingNode.right = newNode;
+        } else {
+            trailingNode.data = newNode.data;
+        }
     }
 
     // @todo - YOU MUST DEFINE THIS METHOD
     getValue(key) {
+        let node = this.search(key);
+
+        if (node != null) {
+            return node.data;
+        }
         return null;
     }
 
     // @todo - YOU MUST DEFINE THIS METHOD
     removeValue(key) {
+        let node = this.search(key);
 
+        if (node != null) {
+            let tempNode = null;
+            if (node.left == null) {
+                this.transplant(node, node.right);
+            } else if (node.right == null) {
+                this.transplant(node, node.left);
+            } else {
+                tempNode = this.minimum(node.right);
+                if (tempNode.parent != null) {
+                    this.transplant(tempNode, tempNode.right);
+                    tempNode.right = node.right;
+                    tempNode.right.parent = tempNode;
+                }
+                this.transplant(node, tempNode);
+                tempNode.left = node.left;
+                tempNode.left.parent = tempNode;
+            }
+        } else {
+            return;
+        }
     }
 
     toStringRecursively(traveller, level) {
