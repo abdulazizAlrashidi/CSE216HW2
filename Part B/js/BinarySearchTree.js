@@ -6,10 +6,6 @@ class Node {
         this.left = initLeft;
         this.right = initRight;
     }
-    //constructor(initKey, initData) {
-    //    this.key = initKey;
-    //    this.data = initData;
-    //}
 };
 
 export default class BinarySearchTree {
